@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Grinta Gun Shop</title>
+<link rel="icon" href="https://i.imgur.com/uDNgtpP.png">
+<!-- logos: WCGo5Fm, Cu4HEzI, uDNgtpP -->
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;500;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0909;
+  --surface: #111010;
+  --card: #171515;
+  --card2: #1d1b1b;
+  --border: rgba(255,255,255,0.06);
+  --red: #c0392b;
+  --red-bright: #e74c3c;
+  --red-glow: rgba(192,57,43,0.3);
+  --gold: #d4a843;
+  --muted: #8a8585;
+  --text: #e8e2df;
+  --text-dim: #b0a9a6;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;font-size:15px}
+
+/* ─── NOISE OVERLAY ─── */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:.4
+}
+
+.wrap{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:0 20px}
+
+/* ─── HEADER ─── */
+header{
+  position:sticky;top:0;z-index:100;
+  background:rgba(10,9,9,0.9);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:0 20px;
+}
+.header-inner{
+  max-width:1280px;margin:0 auto;
+  display:flex;align-items:center;gap:20px;
+  height:72px;
+}
+.brand{display:flex;align-items:center;gap:16px;text-decoration:none}
+.brand img{width:52px;height:52px;border-radius:8px;object-fit:cover;box-shadow:0 0 18px rgba(192,57,43,0.45);border:1px solid rgba(192,57,43,0.3)}
+.brand-name{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;color:var(--text);line-height:1}
+.brand-sub{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:3px;color:var(--muted);text-transform:uppercase}
+
+nav{display:flex;gap:4px;margin-left:auto;align-items:center}
+nav a{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
+  padding:8px 16px;border-radius:4px;color:var(--muted);
+  cursor:pointer;text-decoration:none;transition:all .2s;border:1px solid transparent;
+}
+nav a:hover{color:var(--text);background:rgba(255,255,255,0.04)}
+nav a.active{color:#fff;border-color:var(--red);background:rgba(192,57,43,0.08)}
+.nav-user{
+  margin-left:12px;padding:6px 14px;
+  background:rgba(192,57,43,0.12);border:1px solid rgba(192,57,43,0.3);
+  border-radius:4px;font-family:'Barlow Condensed',sans-serif;
+  font-size:12px;font-weight:600;letter-spacing:1px;color:var(--red-bright);
+  display:none;align-items:center;gap:8px;
+}
+.nav-logout{
+  background:none;border:none;color:var(--muted);
+  cursor:pointer;font-size:16px;padding:4px;line-height:1;
+  transition:color .2s;
+}
+.nav-logout:hover{color:var(--red-bright)}
+
+/* ─── SECTIONS ─── */
+.page{display:none;animation:fadeUp .3s ease both}
+.page.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── HERO ─── */
+.hero{padding:80px 0 60px;position:relative}
+.hero-tag{
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:4px;text-transform:uppercase;color:var(--red-bright);
+  margin-bottom:16px;
+}
+.hero h1{
+  font-family:'Bebas Neue',sans-serif;font-size:clamp(60px,10vw,120px);
+  line-height:.9;letter-spacing:3px;color:#fff;margin-bottom:24px;
+}
+.hero h1 span{
+  -webkit-text-stroke:1px rgba(255,255,255,0.3);
+  color:transparent;
+}
+.hero-desc{
+  max-width:520px;color:var(--text-dim);line-height:1.7;font-size:16px;margin-bottom:40px;
+}
+.hero-divider{
+  width:60px;height:3px;background:linear-gradient(90deg,var(--red),var(--red-bright));
+  margin-bottom:24px;
+}
+.stats-row{display:flex;gap:40px;flex-wrap:wrap}
+.stat{
+  border-left:3px solid var(--red);
+  padding-left:16px;
+}
+.stat-num{
+  font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:2px;
+  color:#fff;line-height:1;
+}
+.stat-lbl{
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-top:4px;
+}
+
+/* ─── CATALOGUE ─── */
+.section-title{
+  font-family:'Bebas Neue',sans-serif;font-size:40px;letter-spacing:3px;
+  color:#fff;margin-bottom:6px;
+}
+.section-sub{
+  font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;
+  letter-spacing:3px;text-transform:uppercase;color:var(--red-bright);margin-bottom:32px;
+}
+.cat-label{
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:4px;text-transform:uppercase;color:var(--muted);
+  padding-bottom:8px;border-bottom:1px solid var(--border);margin-bottom:16px;margin-top:32px;
+}
+
+.items-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.item-card{
+  background:var(--card);border:1px solid var(--border);border-radius:6px;
+  padding:20px;position:relative;overflow:hidden;transition:all .25s;cursor:default;
+}
+.item-card::before{
+  content:'';position:absolute;top:0;left:0;width:3px;height:100%;
+  background:linear-gradient(180deg,var(--red),transparent);
+}
+.item-card:hover{border-color:rgba(192,57,43,0.3);background:var(--card2);transform:translateY(-2px)}
+.item-card strong{
+  font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;
+  color:#fff;display:block;margin-bottom:6px;
+}
+.item-card p{color:var(--muted);font-size:13px;line-height:1.5;margin-bottom:12px}
+.item-price{
+  font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;
+  color:var(--gold);
+}
+.item-img{
+  width:100%;height:160px;object-fit:cover;border-radius:4px;
+  margin-bottom:14px;display:block;
+  background:rgba(0,0,0,0.4);
+}
+
+
+/* ─── AUTH PAGE ─── */
+.auth-layout{display:grid;grid-template-columns:1fr 1fr;gap:40px;padding:60px 0;align-items:start}
+@media(max-width:768px){.auth-layout{grid-template-columns:1fr}}
+.auth-left{padding-right:20px}
+.auth-left h2{
+  font-family:'Bebas Neue',sans-serif;font-size:56px;letter-spacing:3px;
+  color:#fff;line-height:1;margin-bottom:12px;
+}
+.auth-left p{color:var(--text-dim);line-height:1.7;max-width:360px}
+.auth-roles{margin-top:32px;display:flex;flex-direction:column;gap:8px}
+.role-badge{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:6px;
+}
+.role-dot{width:8px;height:8px;border-radius:50%}
+.role-dot.ceo{background:#e74c3c}
+.role-dot.vendor{background:var(--gold)}
+.role-dot.client{background:#3498db}
+.role-name{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text)}
+.role-desc{font-size:12px;color:var(--muted);margin-left:auto}
+
+.auth-form{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:32px}
+.auth-form h3{
+  font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;
+  color:#fff;margin-bottom:24px;
+}
+
+/* ─── FORM ELEMENTS ─── */
+.field{margin-bottom:16px}
+.field label{
+  display:block;font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+  color:var(--muted);margin-bottom:6px;
+}
+.field input,.field textarea,.field select{
+  width:100%;padding:11px 14px;border-radius:5px;
+  border:1px solid var(--border);background:rgba(0,0,0,0.4);
+  color:var(--text);font-family:'Barlow',sans-serif;font-size:14px;
+  transition:all .2s;
+}
+.field input:focus,.field textarea:focus,.field select:focus{
+  outline:none;border-color:var(--red);background:rgba(0,0,0,0.6);
+  box-shadow:0 0 0 3px rgba(192,57,43,0.1);
+}
+.field select option{background:#1a1a1a}
+.field textarea{resize:vertical;min-height:120px}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:11px 22px;border-radius:5px;border:none;cursor:pointer;
+  font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;transition:all .2s;
+}
+.btn-primary{background:linear-gradient(135deg,var(--red),var(--red-bright));color:#fff;box-shadow:0 4px 20px var(--red-glow)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 28px var(--red-glow)}
+.btn-primary:active{transform:translateY(0)}
+.btn-ghost{background:transparent;color:var(--text-dim);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.2);color:var(--text);background:rgba(255,255,255,0.04)}
+.btn-full{width:100%}
+.btn-danger{background:rgba(192,57,43,0.15);color:var(--red-bright);border:1px solid rgba(192,57,43,0.3)}
+.btn-danger:hover{background:rgba(192,57,43,0.25)}
+
+/* ─── ALERTS ─── */
+.alert{
+  padding:11px 16px;border-radius:5px;margin-bottom:16px;
+  font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;
+  letter-spacing:.5px;display:flex;align-items:center;gap:10px;
+}
+.alert-success{background:rgba(39,174,96,0.12);border:1px solid rgba(39,174,96,0.3);color:#6fcf97}
+.alert-error{background:rgba(192,57,43,0.12);border:1px solid rgba(192,57,43,0.3);color:#ff6b6b}
+.alert-info{background:rgba(52,152,219,0.12);border:1px solid rgba(52,152,219,0.3);color:#74b9ff}
+
+/* ─── DASHBOARD ─── */
+.dash-header{
+  padding:40px 0 32px;
+  border-bottom:1px solid var(--border);margin-bottom:32px;
+}
+.dash-header h2{
+  font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:3px;color:#fff;
+}
+.dash-role{
+  display:inline-block;padding:4px 12px;border-radius:3px;
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:3px;text-transform:uppercase;margin-left:12px;
+}
+.dash-role.CEO{background:rgba(231,76,60,0.2);color:#e74c3c}
+.dash-role.Vendeur{background:rgba(212,168,67,0.2);color:var(--gold)}
+.dash-role.Client{background:rgba(52,152,219,0.2);color:#74b9ff}
+
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.dash-grid.triple{grid-template-columns:1fr 1fr 1fr}
+@media(max-width:900px){.dash-grid,.dash-grid.triple{grid-template-columns:1fr}}
+.dash-grid.full{grid-template-columns:1fr}
+
+.panel{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:24px}
+.panel-title{
+  font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;
+  color:#fff;margin-bottom:20px;display:flex;align-items:center;gap:10px;
+}
+.panel-title .icon{font-size:18px}
+
+/* ─── KPI CARDS ─── */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px}
+.kpi{
+  background:var(--card);border:1px solid var(--border);border-radius:6px;
+  padding:16px;text-align:center;position:relative;overflow:hidden;
+}
+.kpi::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--red),transparent);
+}
+.kpi-num{
+  font-family:'Bebas Neue',sans-serif;font-size:40px;letter-spacing:2px;
+  color:#fff;line-height:1;
+}
+.kpi-lbl{
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:4px;
+}
+
+/* ─── LISTS ─── */
+.list-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px;background:rgba(255,255,255,0.02);border:1px solid var(--border);
+  border-radius:5px;margin-bottom:8px;transition:background .2s;
+}
+.list-item:hover{background:rgba(255,255,255,0.04)}
+.list-item-name{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:600;color:var(--text)}
+.list-item-meta{font-size:12px;color:var(--muted);margin-top:2px}
+.list-item-right{text-align:right}
+.list-item-badge{
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+  padding:3px 8px;border-radius:3px;
+  background:rgba(212,168,67,0.15);color:var(--gold);
+}
+.empty-state{
+  text-align:center;padding:40px 20px;
+  font-family:'Barlow Condensed',sans-serif;font-size:13px;
+  letter-spacing:2px;text-transform:uppercase;color:var(--muted);
+}
+
+/* ─── SUPPORT MESSAGE ─── */
+.msg-item{
+  padding:16px;background:rgba(255,255,255,0.02);border:1px solid var(--border);
+  border-left:3px solid var(--red);border-radius:5px;margin-bottom:10px;
+}
+.msg-sender{
+  font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;
+  letter-spacing:1px;color:#fff;margin-bottom:6px;
+}
+.msg-body{font-size:13px;color:var(--text-dim);line-height:1.6;margin-bottom:8px}
+.msg-date{font-size:11px;color:var(--muted)}
+
+/* ─── INVOICE PREVIEW ─── */
+.invoice-preview{
+  background:#f5f0eb;border-radius:6px;overflow:hidden;margin-top:16px;
+}
+.invoice-actions{display:flex;gap:8px;margin-top:12px}
+
+/* ─── SUPPORT PAGE ─── */
+.support-layout{display:grid;grid-template-columns:1fr 480px;gap:40px;padding:60px 0;align-items:start}
+@media(max-width:900px){.support-layout{grid-template-columns:1fr}}
+.support-info h2{font-family:'Bebas Neue',sans-serif;font-size:56px;letter-spacing:3px;color:#fff;margin-bottom:12px}
+.support-info p{color:var(--text-dim);line-height:1.7;max-width:380px;margin-bottom:24px}
+.contact-info-item{
+  display:flex;align-items:center;gap:14px;padding:14px 0;
+  border-bottom:1px solid var(--border);
+}
+.contact-info-item:last-child{border-bottom:none}
+.contact-icon{width:36px;height:36px;background:rgba(192,57,43,0.12);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.contact-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.contact-value{font-size:14px;color:var(--text)}
+
+footer{
+  text-align:center;padding:40px 20px;
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:3px;text-transform:uppercase;color:var(--muted);
+  border-top:1px solid var(--border);margin-top:60px;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:rgba(192,57,43,0.4);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--red)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="brand" href="#" onclick="navigate('home');return false">
+      <img src="https://i.imgur.com/uDNgtpP.png" alt="Grinta Logo" referrerpolicy="no-referrer">
+      <div>
+        <div class="brand-name">Grinta Gun Shop</div>
+        <div class="brand-sub">Armurerie Professionnelle</div>
+      </div>
+    </a>
+    <nav>
+      <a onclick="navigate('home')" data-nav="home" class="active">Accueil</a>
+      <a onclick="navigate('login')" data-nav="login">Connexion</a>
+      <a onclick="navigate('support')" data-nav="support">Support</a>
+    </nav>
+    <div class="nav-user" id="navUser">
+      <span id="navUserName">—</span>
+      <button class="nav-logout" onclick="logout()" title="Déconnexion">✕</button>
+    </div>
+  </div>
+</header>
+
+<!-- ════════════ PAGE ACCUEIL ════════════ -->
+<div id="page-home" class="page active">
+  <div class="wrap">
+    <div class="hero">
+      <div class="hero-tag">Armurerie professionnelle · Fondée 2020</div>
+      <h1>GRINTA<br><span>GUN</span><br>SHOP</h1>
+      <div class="hero-divider"></div>
+      <p class="hero-desc">Spécialiste de l'armement tactique, nous fournissons les meilleures armes et équipements aux professionnels et aux passionnés.</p>
+      <div class="stats-row">
+        <div class="stat">
+          <div class="stat-num" id="statProducts">39</div>
+          <div class="stat-lbl">Produits</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num" id="statClients">0</div>
+          <div class="stat-lbl">Clients</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num" id="statInvoices">0</div>
+          <div class="stat-lbl">Factures</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">Catalogue</div>
+    <div class="section-sub">Notre sélection complète</div>
+
+    <div class="cat-label">🟫 Fusils d'assaut</div>
+    <div class="items-grid">
+      <div class="item-card"><strong>M4A1</strong><p>Fusil d'assaut polyvalent, précis et fiable. Standard militaire mondial.</p><div class="item-price">16 000 $</div></div>
+      <div class="item-card"><strong>MK18</strong><p>Version courte du M4, idéal pour les interventions rapprochées.</p><div class="item-price">16 000 $</div></div>
+      <div class="item-card"><strong>SCAR L</strong><p>Fusil modulaire FN, excellente ergonomie et précision à toutes distances.</p><div class="item-price">16 000 $</div></div>
+      <div class="item-card"><strong>HK 416</strong><p>Fusil Heckler & Koch de référence, utilisé par les forces spéciales mondiales.</p><div class="item-price">16 000 $</div></div>
+      <div class="item-card"><strong>G36C</strong><p>Version compacte du G36, légèreté et fiabilité reconnues.</p><div class="item-price">16 000 $</div></div>
+      <div class="item-card"><strong>AR15</strong><p>Plateforme AR iconique, entièrement modulable selon vos besoins.</p><div class="item-price">16 000 $</div></div>
+      <div class="item-card"><strong>CZ 805</strong><p>Fusil tchèque moderne, robuste et précis en toutes conditions.</p><div class="item-price">16 000 $</div></div>
+      <div class="item-card"><strong>MBR</strong><p>Fusil d'assaut semi-automatique de haute précision tactique.</p><div class="item-price">16 000 $</div></div>
+      <div class="item-card"><strong>ACR</strong><p>Fusil d'assaut polyvalent et modulaire, accessoires universels.</p><div class="item-price">16 000 $</div></div>
+      <div class="item-card"><strong>SCAR L H</strong><p>Version Heavy du SCAR, puissance de feu et portée augmentées.</p><div class="item-price">23 000 $</div></div>
+      <div class="item-card"><strong>RFB</strong><p>Fusil de précision longue portée. Optique haute résolution incluse.</p><div class="item-price">46 000 $</div></div>
+    </div>
+
+    <div class="cat-label">🟫 Mitraillette (SMG)</div>
+    <div class="items-grid">
+      <div class="item-card"><strong>MP5</strong><p>Pistolet-mitrailleur légendaire, précision et cadence de tir élevée.</p><div class="item-price">13 000 $</div></div>
+      <div class="item-card"><strong>UMP 45</strong><p>SMG calibre .45 ACP, puissant et compact pour usage tactique.</p><div class="item-price">13 000 $</div></div>
+      <div class="item-card"><strong>MP7</strong><p>SMG ultra-compact HK, idéal pour opérations discrètes rapprochées.</p><div class="item-price">10 000 $</div></div>
+    </div>
+
+    <div class="cat-label">🟫 Fusil à pompe</div>
+    <div class="items-grid">
+      <div class="item-card"><strong>M870</strong><p>Fusil à pompe Remington, référence absolue depuis des décennies.</p><div class="item-price">13 000 $</div></div>
+      <div class="item-card"><strong>Nova</strong><p>Pompe Benelli léger et rapide, idéal pour les situations courtes distances.</p><div class="item-price">13 000 $</div></div>
+      <div class="item-card"><strong>M590</strong><p>Mossberg à grande capacité, robustesse militaire éprouvée.</p><div class="item-price">13 000 $</div></div>
+    </div>
+
+    <div class="cat-label">🟫 Sniper</div>
+    <div class="items-grid">
+      <div class="item-card"><strong>Warface</strong><p>Sniper longue portée, précision extrême en conditions difficiles.</p><div class="item-price">51 000 $</div></div>
+      <div class="item-card"><strong>M40A1</strong><p>Sniper bolt-action des Marines américains, précision légendaire.</p><div class="item-price">51 000 $</div></div>
+      <div class="item-card"><strong>M24</strong><p>Système sniper de l'armée US, fiable par tous les temps et terrains.</p><div class="item-price">51 000 $</div></div>
+    </div>
+
+    <div class="cat-label">🟫 Pistolet</div>
+    <div class="items-grid">
+      <div class="item-card"><strong>MK23</strong><p>Pistolet SOCOM de haute précision, silencieux compatible.</p><div class="item-price">5 000 $</div></div>
+      <div class="item-card"><strong>M9</strong><p>Beretta 92 militaire américain, fiabilité et ergonomie irréprochables.</p><div class="item-price">5 000 $</div></div>
+      <div class="item-card"><strong>MR</strong><p>Pistolet compact et précis, parfait comme arme de service.</p><div class="item-price">5 000 $</div></div>
+      <div class="item-card"><strong>P320</strong><p>SIG Sauer modulaire adopté par l'armée US, polyvalent.</p><div class="item-price">5 000 $</div></div>
+      <div class="item-card"><strong>FNP45</strong><p>FN calibre .45 ACP, puissance maximale en pistolet compact.</p><div class="item-price">5 000 $</div></div>
+      <div class="item-card"><strong>Glock</strong><p>La référence mondiale des pistolets, robuste et sans compromis.</p><div class="item-price">5 000 $</div></div>
+      <div class="item-card"><strong>Five-Seven</strong><p>FN calibre 5.7mm, grande capacité de chargeur et légèreté.</p><div class="item-price">5 000 $</div></div>
+      <div class="item-card"><strong>CZ 75</strong><p>Pistolet tchèque mythique, précision et finition exceptionnelles.</p><div class="item-price">5 000 $</div></div>
+      <div class="item-card"><strong>M45</strong><p>Pistolet semi-automatique calibre .45 ACP, fiabilité légendaire.</p><div class="item-price">5 000 $</div></div>
+      <div class="item-card"><strong>P99</strong><p>Walther compact et léger, idéal comme arme de service secondaire.</p><div class="item-price">5 000 $</div></div>
+      <div class="item-card"><strong>MR-73</strong><p>Revolver français .357 Magnum, robustesse et précision légendaires.</p><div class="item-price">4 000 $</div></div>
+      <div class="item-card"><strong>MR-96</strong><p>Revolver compact .357 Magnum, barillet 6 coups, excellente tenue.</p><div class="item-price">5 000 $</div></div>
+    </div>
+
+    <div class="cat-label">🟫 Kevlar</div>
+    <div class="items-grid">
+      <div class="item-card"><strong>Kevlar Normal</strong><p>Protection balistique standard, léger et confortable pour usage quotidien.</p><div class="item-price">3 500 $</div></div>
+    </div>
+
+    <div class="cat-label">🟫 Munitions</div>
+    <div class="items-grid">
+      <div class="item-card"><strong>Munitions Pistolet</strong><p>Chargeur complet calibre 9mm / .45 ACP compatible tous pistolets.</p><div class="item-price">125 $</div></div>
+      <div class="item-card"><strong>Munitions .357</strong><p>Cartouches calibre .357 Magnum pour revolvers MR-73 et MR-96.</p><div class="item-price">140 $</div></div>
+      <div class="item-card"><strong>Munitions Pompe</strong><p>Cartouches calibre 12 pour fusils à pompe M870, Nova, M590.</p><div class="item-price">150 $</div></div>
+      <div class="item-card"><strong>Munitions Snipe</strong><p>Cartouches longue portée haute précision pour snipers.</p><div class="item-price">300 $</div></div>
+      <div class="item-card"><strong>Munitions SMG</strong><p>Chargeurs haute capacité compatibles MP5, UMP45, MP7.</p><div class="item-price">180 $</div></div>
+      <div class="item-card"><strong>Munitions Assaut</strong><p>Chargeurs 30 coups compatibles tous fusils d'assaut du catalogue.</p><div class="item-price">230 $</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ PAGE CONNEXION / DASHBOARD ════════════ -->
+<div id="page-login" class="page">
+  <div class="wrap">
+
+    <!-- FORMULAIRE CONNEXION -->
+    <div id="authPanel">
+      <div class="auth-layout">
+        <div class="auth-left">
+          <h2>Connexion</h2>
+          <div class="hero-divider"></div>
+          <p>Accédez à votre espace personnel. Les niveaux d'accès sont définis par votre rôle.</p>
+          <div class="auth-roles">
+            <div class="role-badge">
+              <div class="role-dot ceo"></div>
+              <span class="role-name">CEO</span>
+              <span class="role-desc">Gestion complète</span>
+            </div>
+            <div class="role-badge">
+              <div class="role-dot vendor"></div>
+              <span class="role-name">Vendeur</span>
+              <span class="role-desc">Facturation & clients</span>
+            </div>
+            <div class="role-badge">
+              <div class="role-dot client"></div>
+              <span class="role-name">Client</span>
+              <span class="role-desc">Mes commandes</span>
+            </div>
+          </div>
+        </div>
+        <div class="auth-form">
+          <h3>Se connecter</h3>
+          <div id="authAlert"></div>
+          <div class="field">
+            <label>Identifiant</label>
+            <input id="loginName" placeholder="Votre nom d'utilisateur" autocomplete="off">
+          </div>
+          <div class="field">
+            <label>Mot de passe</label>
+            <input id="loginPass" type="password" placeholder="••••••••">
+          </div>
+          <button class="btn btn-primary btn-full" onclick="doLogin()">Se connecter</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashPanel" style="display:none">
+      <div class="dash-header">
+        <h2>
+          Bienvenue, <span id="dashName">—</span>
+          <span class="dash-role" id="dashRole">—</span>
+        </h2>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-row" id="kpiRow">
+        <div class="kpi"><div class="kpi-num" id="kpiClients">0</div><div class="kpi-lbl">Clients</div></div>
+        <div class="kpi"><div class="kpi-num" id="kpiVendors">0</div><div class="kpi-lbl">Vendeurs</div></div>
+        <div class="kpi"><div class="kpi-num" id="kpiInvoicesD">0</div><div class="kpi-lbl">Factures</div></div>
+        <div class="kpi"><div class="kpi-num" id="kpiMessages">0</div><div class="kpi-lbl">Messages</div></div>
+      </div>
+
+      <div id="alertDash"></div>
+
+      <!-- ─ CEO: créer vendeur & client ─ -->
+      <div id="zoneCEO" style="display:none">
+        <div class="dash-grid" style="margin-bottom:20px">
+          <div class="panel">
+            <div class="panel-title"><span class="icon">👔</span> Créer un vendeur</div>
+            <div class="field">
+              <label>Nom complet</label>
+              <input id="newVendorName" placeholder="Prénom Nom">
+            </div>
+            <button class="btn btn-primary btn-full" onclick="createVendor()">Créer vendeur</button>
+          </div>
+          <div class="panel">
+            <div class="panel-title"><span class="icon">👤</span> Créer un client</div>
+            <div class="field">
+              <label>Nom complet</label>
+              <input id="newClientName" placeholder="Prénom Nom">
+            </div>
+            <button class="btn btn-primary btn-full" onclick="createClient()">Créer client</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─ Vendeur/CEO: créer client (vendeur seul) ─ -->
+      <div id="zoneVendor" style="display:none">
+        <div class="panel" style="margin-bottom:20px">
+          <div class="panel-title"><span class="icon">👤</span> Créer un client</div>
+          <div class="dash-grid">
+            <div class="field">
+              <label>Nom complet</label>
+              <input id="vendorNewClient" placeholder="Prénom Nom">
+            </div>
+            <div style="display:flex;align-items:flex-end;padding-bottom:16px">
+              <button class="btn btn-primary btn-full" onclick="createClientFromVendor()">Créer client</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─ Vendeur/CEO: générer facture ─ -->
+      <div id="zoneInvoice" style="display:none">
+        <div class="dash-grid" style="margin-bottom:20px">
+          <div class="panel">
+            <div class="panel-title"><span class="icon">🧾</span> Générer une facture</div>
+            <div class="field">
+              <label>Client</label>
+              <select id="invoiceClient">
+                <option value="">— Sélectionner un client —</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Produit</label>
+              <select id="invoiceProduct">
+                <option value="">— Sélectionner un produit —</option>
+                <optgroup label="🟫 Fusils d'assaut">
+                  <option value="M4A1|16000">M4A1 — 16 000 $</option>
+                  <option value="MK18|16000">MK18 — 16 000 $</option>
+                  <option value="SCAR L|16000">SCAR L — 16 000 $</option>
+                  <option value="HK 416|16000">HK 416 — 16 000 $</option>
+                  <option value="G36C|16000">G36C — 16 000 $</option>
+                  <option value="AR15|16000">AR15 — 16 000 $</option>
+                  <option value="CZ 805|16000">CZ 805 — 16 000 $</option>
+                  <option value="MBR|16000">MBR — 16 000 $</option>
+                  <option value="ACR|16000">ACR — 16 000 $</option>
+                  <option value="SCAR L H|23000">SCAR L H — 23 000 $</option>
+                  <option value="RFB|46000">RFB — 46 000 $</option>
+                </optgroup>
+                <optgroup label="🟫 Mitraillette (SMG)">
+                  <option value="MP5|13000">MP5 — 13 000 $</option>
+                  <option value="UMP 45|13000">UMP 45 — 13 000 $</option>
+                  <option value="MP7|10000">MP7 — 10 000 $</option>
+                </optgroup>
+                <optgroup label="🟫 Fusil à pompe">
+                  <option value="M870|13000">M870 — 13 000 $</option>
+                  <option value="Nova|13000">Nova — 13 000 $</option>
+                  <option value="M590|13000">M590 — 13 000 $</option>
+                </optgroup>
+                <optgroup label="🟫 Sniper">
+                  <option value="Warface|51000">Warface — 51 000 $</option>
+                  <option value="M40A1|51000">M40A1 — 51 000 $</option>
+                  <option value="M24|51000">M24 — 51 000 $</option>
+                </optgroup>
+                <optgroup label="🟫 Pistolet">
+                  <option value="MK23|5000">MK23 — 5 000 $</option>
+                  <option value="M9|5000">M9 — 5 000 $</option>
+                  <option value="MR|5000">MR — 5 000 $</option>
+                  <option value="P320|5000">P320 — 5 000 $</option>
+                  <option value="FNP45|5000">FNP45 — 5 000 $</option>
+                  <option value="Glock|5000">Glock — 5 000 $</option>
+                  <option value="Five-Seven|5000">Five-Seven — 5 000 $</option>
+                  <option value="CZ 75|5000">CZ 75 — 5 000 $</option>
+                  <option value="M45|5000">M45 — 5 000 $</option>
+                  <option value="P99|5000">P99 — 5 000 $</option>
+                  <option value="MR-73|4000">MR-73 — 4 000 $</option>
+                  <option value="MR-96|5000">MR-96 — 5 000 $</option>
+                </optgroup>
+                <optgroup label="🟫 Kevlar">
+                  <option value="Kevlar Normal|3500">Kevlar Normal — 3 500 $</option>
+                </optgroup>
+                <optgroup label="🟫 Munitions">
+                  <option value="Munitions Pistolet|125">Munitions Pistolet — 125 $</option>
+                  <option value="Munitions .357|140">Munitions .357 — 140 $</option>
+                  <option value="Munitions Pompe|150">Munitions Pompe — 150 $</option>
+                  <option value="Munitions Snipe|300">Munitions Snipe — 300 $</option>
+                  <option value="Munitions SMG|180">Munitions SMG — 180 $</option>
+                  <option value="Munitions Assaut|230">Munitions Assaut — 230 $</option>
+                </optgroup>
+                <option value="CUSTOM|">Montant personnalisé</option>
+              </select>
+            </div>
+            <div class="field" id="customPriceField" style="display:none">
+              <label>Montant ($)</label>
+              <input id="invoiceCustomPrice" type="number" placeholder="ex: 25000">
+            </div>
+            <div class="field">
+              <label>Emplacement</label>
+              <input id="invoiceLocation" placeholder="ex: Magasin principal">
+            </div>
+            <button class="btn btn-primary btn-full" onclick="generateInvoice()">Générer la facture</button>
+            <div id="invoiceResult" style="display:none;margin-top:16px">
+              <div class="invoice-actions">
+                <button class="btn btn-ghost" style="flex:1" onclick="downloadInvoice()">⬇ Télécharger PNG</button>
+                <button class="btn btn-ghost" style="flex:1" onclick="copyInvoiceB64()">📋 Copier base64</button>
+              </div>
+              <canvas id="invoiceCanvas" style="width:100%;margin-top:12px;border-radius:4px;display:block"></canvas>
+            </div>
+          </div>
+
+          <!-- Support messages panel -->
+          <div class="panel">
+            <div class="panel-title"><span class="icon">📬</span> Messages support</div>
+            <div id="supportMsgList"><div class="empty-state">Aucun message</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─ Clients list (CEO) ─ -->
+      <div id="zoneLists" style="display:none">
+        <div class="dash-grid" style="margin-bottom:20px">
+          <div class="panel">
+            <div class="panel-title"><span class="icon">👥</span> Clients</div>
+            <div id="clientListPanel"><div class="empty-state">Aucun client</div></div>
+          </div>
+          <div class="panel">
+            <div class="panel-title"><span class="icon">🏪</span> Vendeurs</div>
+            <div id="vendorListPanel"><div class="empty-state">Aucun vendeur</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─ Espace client ─ -->
+      <div id="zoneClient" style="display:none">
+        <div class="dash-grid" style="margin-bottom:20px">
+          <div class="panel">
+            <div class="panel-title">Mon investissement</div>
+            <div id="clientTotalBox" style="margin-bottom:20px">
+              <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:4px">Total investi</div>
+              <div id="clientTotalAmount" style="font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:2px;color:#fff;line-height:1">0 $</div>
+            </div>
+            <canvas id="pieChart" width="300" height="300" style="display:block;margin:0 auto;max-width:280px"></canvas>
+            <div id="pieLegend" style="margin-top:20px;display:flex;flex-direction:column;gap:8px"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-title">Mes factures</div>
+            <div id="clientInvoices"><div class="empty-state">Aucune facture</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODAL FACTURE CLIENT -->
+      <div id="invoiceModal" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);align-items:center;justify-content:center">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:28px;max-width:700px;width:95%;max-height:90vh;overflow-y:auto">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:#fff">Facture</div>
+            <button onclick="closeInvoiceModal()" style="background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;line-height:1">✕</button>
+          </div>
+          <canvas id="clientInvoiceCanvas" style="width:100%;border-radius:6px;display:block;margin-bottom:16px"></canvas>
+          <div style="display:flex;gap:10px">
+            <button class="btn btn-primary" style="flex:1" onclick="downloadClientInvoice()">⬇ Télécharger PNG</button>
+            <button class="btn btn-ghost" style="flex:1" onclick="copyClientInvoiceB64()">📋 Copier base64</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ PAGE SUPPORT ════════════ -->
+<div id="page-support" class="page">
+  <div class="wrap">
+    <div class="support-layout">
+      <div class="support-info">
+        <h2>Support</h2>
+        <div class="hero-divider"></div>
+        <p>Besoin d'aide ? Notre équipe est disponible pour répondre à toutes vos demandes concernant vos commandes ou votre compte.</p>
+        <div>
+          <div class="contact-info-item">
+            <div class="contact-icon">🏪</div>
+            <div>
+              <div class="contact-label">Boutique</div>
+              <div class="contact-value">Grinta Gun Shop, Los Santos</div>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-icon">⏰</div>
+            <div>
+              <div class="contact-label">Horaires</div>
+              <div class="contact-value">Lun – Dim · 09h – 22h</div>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-icon">💬</div>
+            <div>
+              <div class="contact-label">Réponse</div>
+              <div class="contact-value">Sous 24h ouvrées</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="auth-form">
+          <h3>Envoyer un message</h3>
+          <div id="supportAlert"></div>
+          <div class="field">
+            <label>Votre nom</label>
+            <input id="supName" placeholder="Prénom Nom" autocomplete="off">
+          </div>
+          <div class="field">
+            <label>Message</label>
+            <textarea id="supMsg" placeholder="Décrivez votre demande en détail…"></textarea>
+          </div>
+          <button class="btn btn-primary btn-full" onclick="sendSupport()">Envoyer le message</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>© 2025 Grinta Gun Shop · Armurerie Professionnelle · Tous droits réservés</footer>
+
+<script>
+// ═══════════════════════════════════════════
+//  DATA LAYER
+// ═══════════════════════════════════════════
+const K = {
+  clients:  'g_clients_v7',
+  vendors:  'g_vendors_v7',
+  support:  'g_support_v7',
+  invoices: 'g_invoices_v7',
+  session:  'g_session_v7'
+};
+const CEO_CREDS = {name:'admin', pass:'JF2012'};
+
+const load = k => JSON.parse(localStorage.getItem(k) || '[]');
+const save = (k,v) => localStorage.setItem(k, JSON.stringify(v));
+const randPass = () => Math.floor(100000 + Math.random() * 900000).toString();
+
+// ═══════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════
+function navigate(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelectorAll('[data-nav]').forEach(a => {
+    a.classList.toggle('active', a.dataset.nav === page);
+  });
+}
+
+// ═══════════════════════════════════════════
+//  ALERTS
+// ═══════════════════════════════════════════
+function showAlert(id, msg, type = 'info') {
+  const el = document.getElementById(id);
+  el.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
+  setTimeout(() => { if(el) el.innerHTML = ''; }, 5000);
+}
+
+// ═══════════════════════════════════════════
+//  AUTH
+// ═══════════════════════════════════════════
+function doLogin() {
+  const name = document.getElementById('loginName').value.trim();
+  const pass = document.getElementById('loginPass').value.trim();
+  if (!name || !pass) { showAlert('authAlert','Tous les champs sont requis','error'); return; }
+
+  // CEO
+  if (name === CEO_CREDS.name && pass === CEO_CREDS.pass) {
+    startSession({ name: 'CEO', role: 'CEO' }); return;
+  }
+  // Vendeurs
+  const vendor = load(K.vendors).find(v => v.name === name && v.pass === pass);
+  if (vendor) { startSession({ name: vendor.name, role: 'Vendeur' }); return; }
+  // Clients
+  const client = load(K.clients).find(c => c.name === name && c.pass === pass);
+  if (client) { startSession({ name: client.name, role: 'Client' }); return; }
+
+  showAlert('authAlert','Identifiants incorrects','error');
+}
+
+function startSession(user) {
+  save(K.session, user);
+  renderDashboard(user);
+}
+
+function logout() {
+  localStorage.removeItem(K.session);
+  document.getElementById('authPanel').style.display = '';
+  document.getElementById('dashPanel').style.display = 'none';
+  document.getElementById('navUser').style.display = 'none';
+  document.getElementById('loginName').value = '';
+  document.getElementById('loginPass').value = '';
+  navigate('home');
+}
+
+// ═══════════════════════════════════════════
+//  DASHBOARD RENDER
+// ═══════════════════════════════════════════
+function renderDashboard(user) {
+  document.getElementById('authPanel').style.display = 'none';
+  document.getElementById('dashPanel').style.display = 'block';
+  document.getElementById('dashName').textContent = user.name;
+  const roleEl = document.getElementById('dashRole');
+  roleEl.textContent = user.role;
+  roleEl.className = 'dash-role ' + user.role;
+
+  // Nav user badge
+  const nb = document.getElementById('navUser');
+  nb.style.display = 'flex';
+  document.getElementById('navUserName').textContent = user.name + ' · ' + user.role;
+
+  // Hide all zones
+  ['CEO','Vendor','Invoice','Lists','Client'].forEach(z =>
+    document.getElementById('zone' + z).style.display = 'none'
+  );
+
+  const role = user.role;
+  if (role === 'CEO') {
+    document.getElementById('zoneCEO').style.display = '';
+    document.getElementById('zoneInvoice').style.display = '';
+    document.getElementById('zoneLists').style.display = '';
+    renderClientSelect();
+    renderClientList();
+    renderVendorList();
+    renderSupportMessages();
+  } else if (role === 'Vendeur') {
+    document.getElementById('zoneVendor').style.display = '';
+    document.getElementById('zoneInvoice').style.display = '';
+    renderClientSelect();
+    renderSupportMessages();
+  } else if (role === 'Client') {
+    document.getElementById('zoneClient').style.display = '';
+    document.getElementById('kpiRow').style.display = 'none';
+    renderClientInvoices(user.name);
+  }
+
+  updateKPIs();
+  navigate('login');
+}
+
+// ═══════════════════════════════════════════
+//  KPIs
+// ═══════════════════════════════════════════
+function updateKPIs() {
+  const c = load(K.clients).length;
+  const v = load(K.vendors).length;
+  const i = load(K.invoices).length;
+  const m = load(K.support).length;
+  document.getElementById('kpiClients').textContent = c;
+  document.getElementById('kpiVendors').textContent = v;
+  document.getElementById('kpiInvoicesD').textContent = i;
+  document.getElementById('kpiMessages').textContent = m;
+  document.getElementById('statClients').textContent = c;
+  document.getElementById('statInvoices').textContent = i;
+}
+
+// ═══════════════════════════════════════════
+//  CLIENT SELECT (pour facture)
+// ═══════════════════════════════════════════
+function renderClientSelect() {
+  const sel = document.getElementById('invoiceClient');
+  const clients = load(K.clients);
+  sel.innerHTML = '<option value="">— Sélectionner un client —</option>';
+  clients.forEach((c, i) => {
+    const o = document.createElement('option');
+    o.value = i; o.textContent = c.name;
+    sel.appendChild(o);
+  });
+}
+
+// ═══════════════════════════════════════════
+//  CREATE CLIENT
+// ═══════════════════════════════════════════
+function _doCreateClient(name) {
+  if (!name) { showAlert('alertDash','Nom requis','error'); return; }
+  const clients = load(K.clients);
+  if (clients.find(c => c.name === name)) { showAlert('alertDash','Ce client existe déjà','error'); return; }
+  const pass = randPass();
+  clients.push({ name, pass, id: Date.now() });
+  save(K.clients, clients);
+  renderClientSelect();
+  renderClientList();
+  updateKPIs();
+  showAlert('alertDash', `✓ Client "${name}" créé · Mot de passe : <strong>${pass}</strong>`, 'success');
+}
+function createClient() { _doCreateClient(document.getElementById('newClientName').value.trim()); document.getElementById('newClientName').value = ''; }
+function createClientFromVendor() { _doCreateClient(document.getElementById('vendorNewClient').value.trim()); document.getElementById('vendorNewClient').value = ''; }
+
+// ═══════════════════════════════════════════
+//  CREATE VENDOR
+// ═══════════════════════════════════════════
+function createVendor() {
+  const name = document.getElementById('newVendorName').value.trim();
+  if (!name) { showAlert('alertDash','Nom requis','error'); return; }
+  const vendors = load(K.vendors);
+  if (vendors.find(v => v.name === name)) { showAlert('alertDash','Ce vendeur existe déjà','error'); return; }
+  const pass = randPass();
+  vendors.push({ name, pass, id: Date.now() });
+  save(K.vendors, vendors);
+  renderVendorList();
+  updateKPIs();
+  showAlert('alertDash', `✓ Vendeur "${name}" créé · Mot de passe : <strong>${pass}</strong>`, 'success');
+  document.getElementById('newVendorName').value = '';
+}
+
+// ═══════════════════════════════════════════
+//  LISTS
+// ═══════════════════════════════════════════
+function renderClientList() {
+  const el = document.getElementById('clientListPanel');
+  const clients = load(K.clients);
+  if (!clients.length) { el.innerHTML = '<div class="empty-state">Aucun client</div>'; return; }
+  el.innerHTML = clients.map(c => `
+    <div class="list-item">
+      <div>
+        <div class="list-item-name">${c.name}</div>
+        <div class="list-item-meta">ID · ${c.id}</div>
+      </div>
+      <div class="list-item-right">
+        <span class="list-item-badge">${c.pass}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderVendorList() {
+  const el = document.getElementById('vendorListPanel');
+  const vendors = load(K.vendors);
+  if (!vendors.length) { el.innerHTML = '<div class="empty-state">Aucun vendeur</div>'; return; }
+  el.innerHTML = vendors.map(v => `
+    <div class="list-item">
+      <div>
+        <div class="list-item-name">${v.name}</div>
+        <div class="list-item-meta">ID · ${v.id}</div>
+      </div>
+      <div class="list-item-right">
+        <span class="list-item-badge">${v.pass}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════════════
+//  SUPPORT MESSAGES
+// ═══════════════════════════════════════════
+function renderSupportMessages() {
+  const el = document.getElementById('supportMsgList');
+  const msgs = load(K.support).reverse();
+  if (!msgs.length) { el.innerHTML = '<div class="empty-state">Aucun message</div>'; return; }
+  el.innerHTML = msgs.map(m => `
+    <div class="msg-item">
+      <div class="msg-sender">${m.name}</div>
+      <div class="msg-body">${m.message}</div>
+      <div class="msg-date">${new Date(m.date).toLocaleString('fr-FR')}</div>
+    </div>
+  `).join('');
+}
+
+function sendSupport() {
+  const name = document.getElementById('supName').value.trim();
+  const message = document.getElementById('supMsg').value.trim();
+  if (!name || !message) { showAlert('supportAlert','Tous les champs sont requis','error'); return; }
+  const msgs = load(K.support);
+  msgs.push({ name, message, date: Date.now() });
+  save(K.support, msgs);
+  document.getElementById('supName').value = '';
+  document.getElementById('supMsg').value = '';
+  showAlert('supportAlert','✓ Message envoyé avec succès !','success');
+  updateKPIs();
+}
+
+// ═══════════════════════════════════════════
+//  INVOICE
+// ═══════════════════════════════════════════
+document.getElementById('invoiceProduct').addEventListener('change', function() {
+  const isCustom = this.value.startsWith('CUSTOM');
+  document.getElementById('customPriceField').style.display = isCustom ? '' : 'none';
+});
+
+let currentInvoiceData = null;
+
+function generateInvoice() {
+  const clientIdx = document.getElementById('invoiceClient').value;
+  const productVal = document.getElementById('invoiceProduct').value;
+  const location = document.getElementById('invoiceLocation').value.trim();
+
+  if (clientIdx === '' || !productVal || !location) {
+    showAlert('alertDash','Tous les champs sont requis','error'); return;
+  }
+
+  const clients = load(K.clients);
+  const client = clients[clientIdx];
+  let product, price;
+
+  if (productVal.startsWith('CUSTOM')) {
+    price = document.getElementById('invoiceCustomPrice').value;
+    product = 'Commande personnalisée';
+    if (!price) { showAlert('alertDash','Montant requis','error'); return; }
+  } else {
+    [product, price] = productVal.split('|');
+  }
+
+  const session = load(K.session);
+  const vendorName = Array.isArray(session) ? (session[0]?.name || 'Vendeur') : (session?.name || 'Vendeur');
+  const invoiceNum = 'GGS-' + Date.now().toString().slice(-8);
+  const dateStr = new Date().toLocaleDateString('fr-FR');
+  const timeStr = new Date().toLocaleTimeString('fr-FR');
+
+  const canvas = document.getElementById('invoiceCanvas');
+  canvas.width = 900;
+  canvas.height = 580;
+  const ctx = canvas.getContext('2d');
+
+  const logo = new Image();
+  logo.crossOrigin = 'anonymous';
+  logo.src = 'https://i.imgur.com/uDNgtpP.png';
+  logo.onload = () => _vendorRenderInvoice(ctx, canvas, logo, {client: client.name, product, price, location, vendorName, invoiceNum, dateStr, timeStr});
+  logo.onerror = () => _vendorRenderInvoice(ctx, canvas, null, {client: client.name, product, price, location, vendorName, invoiceNum, dateStr, timeStr});
+}
+
+
+function downloadInvoice() {
+  if (!currentInvoiceData) return;
+  const a = document.createElement('a');
+  a.download = `Facture_Grinta_${Date.now()}.png`;
+  a.href = currentInvoiceData;
+  a.click();
+}
+
+function copyInvoiceB64() {
+  if (!currentInvoiceData) return;
+  navigator.clipboard.writeText(currentInvoiceData)
+    .then(() => showAlert('alertDash','✓ Base64 copié dans le presse-papier','success'))
+    .catch(() => showAlert('alertDash','Erreur lors de la copie','error'));
+}
+
+// ═══════════════════════════════════════════
+//  CATEGORY MAPPING (pour le camembert)
+// ═══════════════════════════════════════════
+const CATEGORY_MAP = {
+  'Fusil': ['M4A1','MK18','SCAR L','HK 416','G36C','AR15','CZ 805','MBR','ACR','SCAR L H','RFB'],
+  'Mitraillette': ['MP5','UMP 45','MP7'],
+  'Pompe': ['M870','Nova','M590'],
+  'Sniper': ['Warface','M40A1','M24'],
+  'Pistolet': ['MK23','M9','MR','P320','FNP45','Glock','Five-Seven','CZ 75','M45','P99','MR-73','MR-96'],
+  'Kevlar': ['Kevlar Normal'],
+  'Munitions': ['Munitions Pistolet','Munitions .357','Munitions Pompe','Munitions Snipe','Munitions SMG','Munitions Assaut']
+};
+const CAT_COLORS = {
+  'Fusil':       '#c0392b',
+  'Mitraillette':'#e67e22',
+  'Pompe':       '#d4a843',
+  'Sniper':      '#8e44ad',
+  'Pistolet':    '#2980b9',
+  'Kevlar':      '#27ae60',
+  'Munitions':   '#7f8c8d',
+  'Autre':       '#555'
+};
+
+function getCategory(product) {
+  if (!product) return 'Autre';
+  const p = String(product).toLowerCase().trim();
+  for (const [cat, items] of Object.entries(CATEGORY_MAP)) {
+    for (const item of items) {
+      const it = item.toLowerCase();
+      if (p === it || p.includes(it) || it.includes(p)) return cat;
+    }
+  }
+  return 'Autre';
+}
+
+function drawPieChart(invoices) {
+  const canvas = document.getElementById('pieChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  const totals = {};
+  let grandTotal = 0;
+  invoices.forEach(inv => {
+    const cat = getCategory(inv.product);
+    const price = parseFloat(String(inv.price).replace(/[^0-9.]/g,'')) || 0;
+    totals[cat] = (totals[cat] || 0) + price;
+    grandTotal += price;
+  });
+
+  document.getElementById('clientTotalAmount').textContent = grandTotal.toLocaleString('fr-FR') + ' $';
+
+  if (grandTotal === 0) {
+    ctx.fillStyle = 'rgba(255,255,255,0.04)';
+    ctx.beginPath(); ctx.arc(W/2,H/2,W/2-10,0,2*Math.PI); ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,0.25)'; ctx.font='13px Arial'; ctx.textAlign='center';
+    ctx.fillText('Aucun achat', W/2, H/2+5); ctx.textAlign='left';
+    return;
+  }
+
+  const cx=W/2, cy=H/2, r=Math.min(W,H)/2-10;
+  let startAngle = -Math.PI/2;
+  const entries = Object.entries(totals).sort((a,b)=>b[1]-a[1]);
+
+  entries.forEach(([cat,val]) => {
+    const slice = (val/grandTotal)*2*Math.PI;
+    ctx.beginPath(); ctx.moveTo(cx,cy);
+    ctx.arc(cx,cy,r,startAngle,startAngle+slice); ctx.closePath();
+    ctx.fillStyle = CAT_COLORS[cat]||'#555'; ctx.fill();
+    ctx.strokeStyle='#171515'; ctx.lineWidth=3; ctx.stroke();
+    startAngle += slice;
+  });
+
+  // Donut hole
+  ctx.beginPath(); ctx.arc(cx,cy,r*0.5,0,2*Math.PI);
+  ctx.fillStyle='#171515'; ctx.fill();
+
+  // Center text
+  ctx.fillStyle='rgba(255,255,255,0.45)'; ctx.font='bold 11px Arial'; ctx.textAlign='center';
+  ctx.fillText('TOTAL', cx, cy-6);
+  ctx.fillStyle='#fff'; ctx.font='bold 13px Arial';
+  ctx.fillText(grandTotal.toLocaleString('fr-FR')+' $', cx, cy+11);
+  ctx.textAlign='left';
+
+  document.getElementById('pieLegend').innerHTML = entries.map(([cat,val]) => `
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border)">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:10px;height:10px;border-radius:2px;background:${CAT_COLORS[cat]||'#555'};flex-shrink:0"></div>
+        <span style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;color:var(--text-dim)">${cat}</span>
+      </div>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--gold)">${Number(val).toLocaleString('fr-FR')} $</span>
+    </div>
+  `).join('');
+}
+
+let currentClientInvoiceData = null;
+
+function renderClientInvoices(clientName) {
+  const el = document.getElementById('clientInvoices');
+  const invoices = load(K.invoices).filter(i => i.client === clientName).reverse();
+  drawPieChart(invoices);
+  if (!invoices.length) { el.innerHTML = '<div class="empty-state">Aucune facture</div>'; return; }
+  el.innerHTML = invoices.map((inv, idx) => `
+    <div class="list-item" style="cursor:pointer"
+         onclick="openClientInvoice(${idx}, '${clientName.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}')">
+      <div style="flex:1;min-width:0">
+        <div class="list-item-name">${inv.product}</div>
+        <div class="list-item-meta">${new Date(inv.date).toLocaleString('fr-FR')} · ${inv.location||'—'}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;margin-left:12px">
+        <span class="list-item-badge">${Number(inv.price).toLocaleString('fr-FR')} $</span>
+        <span style="font-size:11px;color:var(--red-bright);font-family:'Barlow Condensed',sans-serif;letter-spacing:1px">Voir →</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openClientInvoice(idx, clientName) {
+  const invoices = load(K.invoices).filter(i => i.client === clientName).reverse();
+  const inv = invoices[idx];
+  if (!inv) return;
+  currentClientInvoiceData = null;
+  document.getElementById('invoiceModal').style.display = 'flex';
+  const canvas = document.getElementById('clientInvoiceCanvas');
+  canvas.width = 900; canvas.height = 580;
+  const ctx = canvas.getContext('2d');
+  const d = {
+    client: inv.client, product: inv.product, price: inv.price,
+    location: inv.location||'—', vendorName: inv.vendor||'Grinta',
+    invoiceNum: inv.num||('GGS-'+String(inv.date).slice(-8)),
+    dateStr: new Date(inv.date).toLocaleDateString('fr-FR'),
+    timeStr: new Date(inv.date).toLocaleTimeString('fr-FR')
+  };
+  // Draw immediately without logo (safe, no CORS)
+  _renderInvoice(ctx, canvas, null, d);
+  // Try logo — if CORS allows it, redraw
+  const logo = new Image();
+  logo.crossOrigin = 'anonymous';
+  logo.referrerPolicy = 'no-referrer';
+  logo.onload = () => { try { _renderInvoice(ctx, canvas, logo, d); } catch(e){} };
+  logo.src = 'https://i.imgur.com/uDNgtpP.png';
+}
+
+function _renderInvoice(ctx, canvas, logo, d) {
+  const W=canvas.width, H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#faf8f5'; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#1a0a0a'; ctx.fillRect(0,0,W,130);
+  ctx.fillStyle='#c0392b'; ctx.fillRect(0,130,W,5);
+  if(logo){try{ctx.drawImage(logo,30,22,86,86);}catch(e){}}
+  const tx = logo ? 140 : 40;
+  ctx.fillStyle='#fff'; ctx.font='bold 36px "Arial Black",Arial'; ctx.fillText('GRINTA GUN SHOP',tx,68);
+  ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.font='14px Arial'; ctx.fillText('Armurerie Professionnelle',tx,90);
+  ctx.fillStyle='#c0392b'; ctx.font='bold 13px Arial'; ctx.fillText('FACTURE OFFICIELLE',tx,112);
+  ctx.textAlign='right';
+  ctx.fillStyle='#e74c3c'; ctx.font='bold 13px Arial'; ctx.fillText(d.invoiceNum,W-30,54);
+  ctx.fillStyle='rgba(255,255,255,0.4)'; ctx.font='12px Arial'; ctx.fillText(d.dateStr+' · '+d.timeStr,W-30,72);
+  ctx.textAlign='left';
+  const y=165, c2=480;
+  const fld=(lbl,val,x,yy)=>{
+    ctx.fillStyle='#999'; ctx.font='bold 11px Arial'; ctx.fillText(lbl,x,yy);
+    ctx.fillStyle='#111'; ctx.font='bold 20px Arial'; ctx.fillText(val,x,yy+24);
+  };
+  fld('CLIENT',d.client,50,y); fld('EMPLACEMENT',d.location,50,y+60);
+  fld('VENDEUR',d.vendorName,c2,y); fld('PRODUIT',d.product,c2,y+60);
+  ctx.strokeStyle='#ddd'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(50,y+108); ctx.lineTo(W-50,y+108); ctx.stroke();
+  ctx.fillStyle='#1a0a0a'; ctx.fillRect(50,y+122,W-100,96);
+  ctx.fillStyle='#c0392b'; ctx.font='bold 12px Arial'; ctx.fillText('MONTANT TOTAL',80,y+155);
+  ctx.fillStyle='#fff'; ctx.font='bold 44px "Arial Black",Arial';
+  ctx.fillText(Number(d.price).toLocaleString('fr-FR')+' $',80,y+203);
+  ctx.fillStyle='#bbb'; ctx.font='11px Arial';
+  ctx.fillText('Grinta Gun Shop  ·  Document officiel',50,H-22);
+  ctx.textAlign='right'; ctx.fillText('N°  '+d.invoiceNum,W-50,H-22); ctx.textAlign='left';
+  try { currentClientInvoiceData = canvas.toDataURL('image/png'); } catch(e){ currentClientInvoiceData=null; }
+}
+
+function _vendorRenderInvoice(ctx, canvas, logo, d) {
+  _renderInvoice(ctx, canvas, logo, d);
+  currentInvoiceData = currentClientInvoiceData;
+  document.getElementById('invoiceResult').style.display = '';
+  canvas.style.display = 'block';
+  const invoices = load(K.invoices);
+  invoices.push({ client:d.client, product:d.product, price:d.price, location:d.location, vendor:d.vendorName, date:Date.now(), num:d.invoiceNum });
+  save(K.invoices, invoices);
+  updateKPIs();
+  showAlert('alertDash','✓ Facture générée avec succès','success');
+}
+
+function closeInvoiceModal() {
+  document.getElementById('invoiceModal').style.display = 'none';
+  currentClientInvoiceData = null;
+}
+
+function downloadClientInvoice() {
+  let data = currentClientInvoiceData;
+  if (!data) { try { data = document.getElementById('clientInvoiceCanvas').toDataURL('image/png'); } catch(e){ alert('Impossible (canvas teinté).'); return; } }
+  const a=document.createElement('a'); a.download='Facture_Grinta_'+Date.now()+'.png'; a.href=data; a.click();
+}
+
+function copyClientInvoiceB64() {
+  let data = currentClientInvoiceData;
+  if (!data) { try { data = document.getElementById('clientInvoiceCanvas').toDataURL('image/png'); } catch(e){ showAlert('alertDash','Impossible de copier','error'); return; } }
+  navigator.clipboard.writeText(data)
+    .then(()=>{ closeInvoiceModal(); showAlert('alertDash','✓ Base64 copié !','success'); })
+    .catch(()=>showAlert('alertDash','Erreur copie','error'));
+}
+
+document.getElementById('invoiceModal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeInvoiceModal();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeInvoiceModal();
+});
+
+// ═══════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════
+updateKPIs();
+
+// Restore session
+const savedSession = JSON.parse(localStorage.getItem(K.session) || 'null');
+if (savedSession && savedSession.name) {
+  renderDashboard(savedSession);
+}
+
+// Support: pre-fill name if logged in
+document.querySelector('[data-nav="support"]').addEventListener('click', () => {
+  const s = JSON.parse(localStorage.getItem(K.session) || 'null');
+  if (s && s.name) document.getElementById('supName').value = s.name;
+});
+</script>
+</body>
+</html>
